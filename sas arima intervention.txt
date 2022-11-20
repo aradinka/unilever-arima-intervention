@@ -1,0 +1,13 @@
+proc import datafile = '/home/u58556728/sasuser.v94/Input intervensi asli.xlsx'
+DBMS = xlsx OUT = tkimfix1;
+PROC PRINT DATA=tkimfix1;
+proc arima data=tkimfix1 out=output1;
+identify var=data(1, 1) crosscorr=(st(1)) noprint;
+estimate q=(1) input=( 2 $ (1) st)
+noconstant method=cls;
+forecast lead=19 out=fore printall;
+proc arima data=fore;
+identify var=residual;
+proc univariate data=fore normal plot;
+var residual;
+
